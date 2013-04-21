@@ -1,0 +1,149 @@
+
+\documentclass[a4paper, 12pt]{article}
+
+\usepackage[latin1]{inputenc}
+
+\usepackage{amsmath}
+
+\usepackage{amsfonts}
+
+\usepackage{amssymb}
+
+\usepackage{graphicx}
+
+\usepackage{subfig}
+
+\usepackage{float}
+
+\usepackage{tabularx}
+
+\usepackage[margin=1in, paperheight=9in]{geometry}
+
+\setlength{\parskip}{3ex plus 2ex minus 2ex}
+
+
+%\DeclareGraphicsExtensions{.png}
+
+\newcommand{\img}[4] {
+
+	\begin{figure}[H]
+
+		\centering
+
+		\subfloat{\includegraphics[scale=#1]{#2}\label{#4}}
+
+		\caption{#3}
+
+\end{figure}
+
+%	\afterpage{\clearpage}
+
+}
+
+%usage: \img{SCALE}{FILENAME}{CAPTION}{LABEL}
+
+
+\newcommand{\imge}[3] {
+
+	\begin{figure}[H]
+
+		\centering
+
+		\subfloat{\includegraphics[width=1\textwidth, height = .45\textwidth]{#1}\label{#3}}
+
+		\caption{#2}
+
+\end{figure}
+
+}
+
+
+\begin{document}
+
+\author{J. A. Chávez García \\J. A. Garza Guardado\\E. Mireles Gutiérrez}
+
+\title{A Satellite Constellation for Martian Communication Systems}
+
+\maketitle
+
+\newpage
+
+\tableofcontents
+
+\newpage
+
+
+\begin{abstract}
+
+A communication system in Mars orbit will be designed to send data to Earth from existing orbiters and landers. This system will be implemented using a constellation made up of picosatellites along with larger microsatellites in an Ad-Hoc network. The main purpose of this work is to propose a way to lessen the data burden on existing orbiters and also to provide an affordable and realistic way of providing a consistent and large coverage of scientifically relevant regions.
+
+\end{abstract}
+
+
+\section{Introduction}
+
+There has been a renewed interest in the exploration of Mars. The most recent high profile mission has been NASA's Curiosity lander, which includes an impressive suite of sensor and the ability to do in-situ analysis of matter found on Mars. However, all of this new data will cause a strain on the existing orbiter's communication systems. Despite this problem, as far as the authors are concerned, there are no plans of getting a communication system on a Mars' orbit as doing so is prohibitively expensive. Therefore innovative approaches must be considered in order to tackle this issue. The project attempts to be a simple yet comprehensive approach in how to accomplish a communication system for Mars and also to show the way into further interesting problems to solve.
+
+The challenge faced by the science teams is that most of the sensors in the orbiters can take measurements with large data outputs, which is further compounded by the fact that they also have to act as a relay for the rovers currently on Mars. The window of opportunity to download or upload data is rather short considering the amount of data that is handled. There are even some cases in which science data must be overwritten, as there is no chance to download all data and send further instructions for the rovers. The Mars Reconnaissance Orbiter provides full coverage of the planet due to it's highly elliptical polar orbit, however passes through a region are uncommon, which is something that could be desired in future missions.
+
+\section{System Overview}
+
+\subsection{Transmission between MRO and Earth}
+ The downlink to Earth from the MRO is of 6Mb/s this means that if we want to send an image like the one in figure X whose size is of 407KB we would need to wait 0.54 seconds. But to this we need to add the propagation delay of the wave in the space. For a distance of 100,000,000 km from Earth to Mars, that is the closest distance between Mars and Earth, and having the propagation of a transmission wave of 300,000,000 m/s the delay is of 333.333 seconds. Adding both delays we end with a total delay of 333.873 seconds or 5.56 minutes. 
+ 
+The above result considers the best delay in transmission because normally the distance between Earth and Mars is of 250,000,000 Km and also we are not including the overhead of the transmission protocols. Also the MRO can only establish a direct connection to Earth from 10 to 11 hours in a day when the MRO is not in the dark side of Mars. 
+
+\subsection{Transmission between Curiosity and MRO}
+The downlink between the Curiosity and MRO is of 256 kb/s this means that again for our image in figure X whose size is of 470KB the total delay in transmission would take 12.71 seconds. 
+Although the link speed is good considering difficulty of sending a rover to Mars the principal problem is that the MRO satellite can only see the Curiosity Rover for 6 minutes 2 times a day due to the rotation of the MRO around Mars.
+
+\imge{Guardado.png}{Image taken by Curiosity Rover}{CurRov}
+
+\subsection{Mars Repeater System}
+The communication system as laid out previously calls for a constellation of satellites arranged in such a way as to provide large coverage and in sufficient numbers such that they provide a decently constant link in areas of interest. Since one of the main problems of doing space missions is launching heavy payloads, this particular mission is best suited to a class of small satellites in a category called ``picosatellites". Their advantages are their low cost relative to conventional satellites and their small size and weight, which means they can ``hitch a ride"' with a larger satellite without affecting the main mission. The coverage concept is shown in figure [\ref{CubeSat}].
+
+\imge{cubesat.png}{Flybys of CubeSat Constellation}{CubeSat}
+
+The second part of the system would be a far smaller constellation of microsatellites which would handle the communications to Earth. They would carry a high-gain dish antenna and a transmitter that works in the X-band according to the protocol laid out by the Consultative Committee for Space Data Systems (CCSDS). They would also carry a UHF antenna to communicate with the CubeSat constellation. In addition they would carry larger solar panels and power system to supply the necessary transmission energy for the signal to reach the Deep Space Network (DSN) antennas.
+
+\section{System Model}
+The link budget for the systems was calculated the Friis transmission equation, shown in equation (\ref{eq:budgetLink}). This was a very simple way to know quickly if our system was feasible. 
+
+\begin{equation}
+P_{\text{RX}} = P_{\text{tx}}+G_{\text{RXEarth}}+G_{\text{TXOrbiter}}-L_{\text{FS}}
+\label{eq:budgetLink}
+\end{equation}
+
+Where $P_{\text{tx}}$ is the transmitter's power in dBm, $G_{\text{RXEarth}}$ is the gain from the antenna on Earth in dBi, $G_{\text{TXOrbiter}}$ is the gain from the transmitter's antenna in dBi and $L_{\text{FS}}$ is the attenuation through wave propagation in space. We need to calculate this parameter, commonly called the free space path loss. This is described in equation (\ref{eq:pathLoss}).
+
+\begin{equation}
+L_{\text{FS}} = 20 \text{log}\left( \frac{4\pi d}{\lambda}\right)
+\label{eq:pathLoss}
+\end{equation}
+
+where $\lambda$ is the signal's wavelength in meters and $d$ is the distance between the transmitter and the receiver.
+
+\section{Conclusion}
+We would have a better coverage of important areas and we would have a larger stream of data available from the rovers and also to be forwarded to space.
+
+\section{Future Research Goals}
+
+\subsection{Refinement of Wave Propagation Model}
+A more refined wave propagation model can be achieved by considering other phenomena. Due to time constraints the important effect of Doppler shift in the radio wave phase was neglected. This effect would be more deeply felt in the CubeSat constellation than in interplanetary communication. Nevertheless this is one area of opportunity that could be further elaborated on.
+
+\subsection{Ad-hoc Network Coordination Protocol}
+The issue of coordinating the constellation of CubeSats was also neglected. The problem might not be very severe if the density of CubeSats remains low, but elaborating methods to find an efficient relay path to a satellite with direct view to Earth could be of great importance, as this saves the limited bandwidth available for the system and also could reduce latency as well as energy usage.
+
+\newpage
+
+\section{References}
+Makovsky, A., Ilott, P., Taylor, J. (2009). Mars Science Laboratory Telecommunications System Design
+Retrieved the 21st April 2013, from: http://descanso.jpl.nasa.gov/
+DPSummary/Descanso14\_MSL\_Telecom.pdf
+
+Taylor, J, K. Lee, D. Shambayati, S. (2006). Mars Reconnaisassance Orbiter Telecommunications
+Retrieved the 21st April 2013, from: http://descanso.jpl.nasa.gov/
+DPSummary/MRO\_092106.pdf
+
+
+\end{document}
